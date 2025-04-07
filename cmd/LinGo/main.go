@@ -6,16 +6,20 @@ import (
 	"os"
 
 	"gioui.org/app"
+	"gioui.org/layout"
 	"gioui.org/op"
-	"gioui.org/text"
+	"gioui.org/unit"
+	"gioui.org/widget"
 	"gioui.org/widget/material"
 )
+
+type C = layout.Context
+type D = layout.Dimensions
 
 func main() {
 	go func() {
 		window := new(app.Window)
-		err := run(window)
-		if err != nil {
+		if err := run(window); err != nil {
 			log.Fatal(err)
 		}
 		os.Exit(0)
@@ -23,9 +27,14 @@ func main() {
 	app.Main()
 }
 
-
 func run(window *app.Window) error {
+	window.Option(app.Title("LinGo"))
 	theme := material.NewTheme()
+	textInput := widget.Editor{
+		SingleLine: true,
+		Filter:     "abcdefghijklmnopqrstuvwxyz",
+		MaxLen: 15,
+	}
 	var ops op.Ops
 	for {
 		switch e := window.Event().(type) {
@@ -33,13 +42,39 @@ func run(window *app.Window) error {
 			return e.Err
 		case app.FrameEvent:
 			gtx := app.NewContext(&ops, e)
-			title := material.H1(theme, "Hello, Gio")
-
-			nord3 := color.NRGBA{R: 76, G: 86, B: 106, A: 255}
-			title.Color = nord3
-			title.Alignment = text.Middle
-
-			title.Layout(gtx)
+			layout.Flex{
+				Axis:    layout.Vertical,
+				Spacing: layout.SpaceStart,
+			}.Layout(gtx,
+				layout.Rigid(
+					func(gtx C) D {
+						margins := layout.Inset{
+							Top:    unit.Dp(25),
+							Bottom: unit.Dp(25),
+							Right:  unit.Dp(80),
+							Left:   unit.Dp(80),
+						}
+						border := widget.Border{
+							Color:        color.NRGBA{R: 204, G: 204, B: 204, A: 0xFF},
+							CornerRadius: unit.Dp(3),
+							Width:        unit.Dp(2),
+						}
+						return margins.Layout(gtx,
+							func(gtx C) D {
+								return border.Layout(gtx,
+									func(gtx C) D {
+										return layout.UniformInset(unit.Dp(10)).Layout(gtx,
+											material.Editor(theme, &textInput, "Enter Word").Layout)
+									},
+									)
+							},
+							)
+					},
+					),
+				layout.Rigid(
+					layout.Spacer{Height: unit.Dp(25)}.Layout,
+					),
+				)
 			e.Frame(gtx.Ops)
 		}
 	}
