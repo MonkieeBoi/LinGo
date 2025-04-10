@@ -8,6 +8,7 @@ import (
 	"gioui.org/app"
 	"gioui.org/layout"
 	"gioui.org/op"
+	"gioui.org/op/paint"
 	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
@@ -30,10 +31,12 @@ func main() {
 func run(window *app.Window) error {
 	window.Option(app.Title("LinGo"))
 	theme := material.NewTheme()
+	theme.Palette.Bg = color.NRGBA{46, 52, 64, 0xFF}
+	theme.Palette.Fg = color.NRGBA{0xFF, 0xFF, 0xFF, 0xFF}
 	textInput := widget.Editor{
 		SingleLine: true,
 		Filter:     "abcdefghijklmnopqrstuvwxyz",
-		MaxLen: 15,
+		MaxLen:     15,
 	}
 	var ops op.Ops
 	for {
@@ -42,9 +45,10 @@ func run(window *app.Window) error {
 			return e.Err
 		case app.FrameEvent:
 			gtx := app.NewContext(&ops, e)
+			paint.Fill(&ops, color.NRGBA{46, 52, 64, 0xFF})
 			layout.Flex{
 				Axis:    layout.Vertical,
-				Spacing: layout.SpaceStart,
+				Spacing: layout.SpaceEnd,
 			}.Layout(gtx,
 				layout.Rigid(
 					func(gtx C) D {
@@ -66,15 +70,12 @@ func run(window *app.Window) error {
 										return layout.UniformInset(unit.Dp(10)).Layout(gtx,
 											material.Editor(theme, &textInput, "Enter Word").Layout)
 									},
-									)
+								)
 							},
-							)
+						)
 					},
-					),
-				layout.Rigid(
-					layout.Spacer{Height: unit.Dp(25)}.Layout,
-					),
-				)
+				),
+			)
 			e.Frame(gtx.Ops)
 		}
 	}
