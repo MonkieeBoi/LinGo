@@ -30,7 +30,7 @@ func main() {
 	app.Main()
 }
 
-func tile(th *material.Theme, s string) layout.FlexChild {
+func tile(th *material.Theme, s rune) layout.FlexChild {
 	return layout.Rigid(
 		func(gtx C) D {
 			margins := layout.Inset{
@@ -48,7 +48,7 @@ func tile(th *material.Theme, s string) layout.FlexChild {
 				func(gtx C) D {
 					return border.Layout(gtx,
 						func(gtx C) D {
-							textH4 := material.H4(th, s)
+							textH4 := material.H4(th, string(s))
 							textH4.Alignment = text.Middle
 							gtx.Constraints.Min.X = int(unit.Dp(33))
 							return layout.UniformInset(unit.Dp(10)).Layout(gtx, textH4.Layout)
@@ -58,6 +58,14 @@ func tile(th *material.Theme, s string) layout.FlexChild {
 			)
 		},
 	)
+}
+
+func rack(th *material.Theme, rac []rune) []layout.FlexChild {
+	t := make([]layout.FlexChild, 0)
+	for _, r := range rac {
+		t = append(t, tile(th, r))
+	}
+	return t
 }
 
 func run(window *app.Window) error {
@@ -123,13 +131,7 @@ func run(window *app.Window) error {
 							Axis:    layout.Horizontal,
 							Spacing: layout.SpaceSides,
 						}.Layout(gtx,
-							tile(th, "A"),
-							tile(th, "E"),
-							tile(th, "I"),
-							tile(th, "N"),
-							tile(th, "R"),
-							tile(th, "S"),
-							tile(th, "T"),
+							rack(th, []rune{'E', 'I', 'N', 'R', 'S', 'T'})...,
 						)
 					},
 				),
