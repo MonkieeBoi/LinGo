@@ -1,0 +1,88 @@
+package db
+
+import (
+	"database/sql"
+	"path"
+	"sort"
+	"strings"
+
+	"github.com/adrg/xdg"
+	_ "modernc.org/sqlite"
+)
+
+var db *sql.DB
+
+func getDBPath() (string, error) {
+	dbFileName := "db.sqlite"
+	path, err := xdg.DataFile(path.Join("LinGo", dbFileName))
+	if err != nil {
+		return "", err
+	}
+	return path, nil
+}
+
+func InitDB() error {
+	dbPath, err := getDBPath()
+	if err != nil {
+		return err
+	}
+	db, err = sql.Open("sqlite", dbPath)
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec(
+		`CREATE TABLE IF NOT EXISTS words (
+        alpha TEXT NOT NULL,
+        word TEXT NOT NULL,
+		PRIMARY KEY (alpha, word)
+        );`,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func sortString(s string) string {
+	sSlice := strings.Split(s, "")
+	sort.Strings(sSlice)
+	return strings.Join(sSlice, "")
+}
+
+func AddWord(word string) error {
+	alpha := sortString(word)
+	_, err := db.Exec("INSERT INTO words (alpha, word) VALUES (?, ?)", alpha, word)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func DelWord(word string) error {
+	_, err := db.Exec("DELETE FROM words WHERE word = ?;", word)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetWords(alpha string) ([]string, error) {
+	var words []string
+	rows, err := db.Query("SELECT word FROM words WHERE alpha = ?", alpha)
+	if err != nil {
+		return nil, nil
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var word string
+		if err := rows.Scan(&word); err != nil {
+			return nil, nil
+		}
+		words = append(words, word)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, nil
+	}
+	return words, nil
+}
