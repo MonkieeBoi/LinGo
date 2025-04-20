@@ -1,18 +1,52 @@
 package components
 
 import (
-	"fmt"
 	"image/color"
+	"strings"
 
 	"gioui.org/app"
 	"gioui.org/layout"
 	"gioui.org/op"
 	"gioui.org/op/paint"
 	"gioui.org/widget"
+	"github.com/MonkieeBoi/LinGo/internal/db"
 	"github.com/MonkieeBoi/LinGo/internal/theme"
 )
 
+type data struct {
+	rack  []rune
+	words map[string]bool
+	found map[string]bool
+}
+
+func newData() (data, error) {
+	d := data{
+		words: make(map[string]bool),
+		found: make(map[string]bool),
+	}
+	alpha, err := db.GenAlpha()
+	if err != nil {
+		return d, err
+	}
+
+	words, err := db.GetWords(alpha)
+	if err != nil {
+		return d, err
+	}
+
+	for _, word := range words {
+		d.words[word] = true
+	}
+	d.rack = []rune(strings.ToUpper(alpha))
+	return d, nil
+}
+
 func NewAppWindow(window *app.Window) error {
+	d, err := newData()
+	if err != nil {
+		return err
+	}
+
 	window.Option(app.Title("LinGo"))
 	th := theme.NewTheme()
 	textInput := widget.Editor{
@@ -33,8 +67,16 @@ func NewAppWindow(window *app.Window) error {
 				switch tev.(type) {
 				case widget.SubmitEvent:
 					word := tev.(widget.SubmitEvent).Text
+					if _, ok := d.words[word]; ok {
+						d.found[word] = true
+					}
+					if len(d.found) == len(d.words) {
+						d, err = newData()
+						if err != nil {
+							return err
+						}
+					}
 					textInput.SetText("")
-					fmt.Println(word)
 				}
 			}
 			layout.Flex{
@@ -43,10 +85,10 @@ func NewAppWindow(window *app.Window) error {
 				Alignment: layout.Middle,
 			}.Layout(gtx,
 				layout.Rigid(
-					LayoutTextInput(&textInput, th),
+					LayoutTextInput(&textInput, th, d),
 				),
 				layout.Rigid(
-					LayoutRack(th, []rune{'E', 'I', 'N', 'R', 'S', 'T'}),
+					LayoutRack(th, d.rack),
 				),
 			)
 			e.Frame(gtx.Ops)

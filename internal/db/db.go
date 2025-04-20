@@ -77,7 +77,7 @@ func GetWords(alpha string) ([]string, error) {
 	for rows.Next() {
 		var word string
 		if err := rows.Scan(&word); err != nil {
-			return nil, nil
+			return nil, err
 		}
 		words = append(words, word)
 	}
@@ -85,4 +85,13 @@ func GetWords(alpha string) ([]string, error) {
 		return nil, nil
 	}
 	return words, nil
+}
+
+func GenAlpha() (string, error) {
+	var alpha string
+	row := db.QueryRow("SELECT alpha FROM words ORDER BY RANDOM() LIMIT 1")
+	if err := row.Scan(&alpha); err != nil {
+		return "", err
+	}
+	return alpha, nil
 }
