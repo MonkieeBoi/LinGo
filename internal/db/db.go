@@ -89,7 +89,7 @@ func GetWords(alpha string) ([]string, error) {
 
 func GenAlpha() (string, error) {
 	var alpha string
-	row := db.QueryRow("SELECT alpha FROM words ORDER BY RANDOM() LIMIT 1")
+	row := db.QueryRow("SELECT DISTINCT alpha FROM words ORDER BY RANDOM() LIMIT 1")
 	if err := row.Scan(&alpha); err != nil {
 		return "", err
 	}

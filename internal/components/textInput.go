@@ -2,7 +2,6 @@ package components
 
 import (
 	"image/color"
-	"strconv"
 
 	"gioui.org/layout"
 	"gioui.org/unit"
@@ -19,7 +18,7 @@ func NewTextInput() widget.Editor {
 	}
 }
 
-func LayoutTextInput(editor *widget.Editor, th *material.Theme, d data) func(C) D {
+func LayoutTextInput(d *data, u *ui) func(C) D {
 	return func(gtx C) D {
 		margins := layout.Inset{
 			Top:    unit.Dp(25),
@@ -36,7 +35,7 @@ func LayoutTextInput(editor *widget.Editor, th *material.Theme, d data) func(C) 
 					func(gtx C) D {
 						gtx.Constraints.Max.X = int(unit.Dp(400))
 						return layout.UniformInset(unit.Dp(10)).Layout(gtx,
-							material.Editor(th, editor, strconv.Itoa(len(d.words)-len(d.found)) + " words remaining").Layout)
+							material.Editor(u.th, u.input, d.left()+" words remaining").Layout)
 					},
 				)
 			},
