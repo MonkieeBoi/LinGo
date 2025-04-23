@@ -10,9 +10,6 @@ import (
 	"gioui.org/widget/material"
 )
 
-type C = layout.Context
-type D = layout.Dimensions
-
 func tile(th *material.Theme, s rune) layout.FlexChild {
 	return layout.Rigid(
 		func(gtx C) D {
@@ -43,21 +40,21 @@ func tile(th *material.Theme, s rune) layout.FlexChild {
 	)
 }
 
-func NewRack(th *material.Theme, rac []rune) []layout.FlexChild {
+func newRack(th *material.Theme, rack []rune) []layout.FlexChild {
 	t := make([]layout.FlexChild, 0)
-	for _, r := range rac {
+	for _, r := range rack {
 		t = append(t, tile(th, r))
 	}
 	return t
 }
 
-func LayoutRack(th *material.Theme, runes []rune) func(C) D {
+func LayoutRack(d *data, u *ui) func(C) D {
 	return func(gtx C) D {
 		return layout.Flex{
 			Axis:    layout.Horizontal,
 			Spacing: layout.SpaceSides,
 		}.Layout(gtx,
-			NewRack(th, runes)...,
+			newRack(u.th, d.rack)...,
 		)
 	}
 

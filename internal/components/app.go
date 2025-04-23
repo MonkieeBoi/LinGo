@@ -10,6 +10,9 @@ import (
 	"gioui.org/widget"
 )
 
+type C = layout.Context
+type D = layout.Dimensions
+
 func NewAppWindow(window *app.Window) error {
 	d, err := newData()
 	if err != nil {
@@ -58,7 +61,10 @@ func drawApp(gtx C, d *data, u *ui) error {
 			LayoutTextInput(d, u),
 		),
 		layout.Rigid(
-			LayoutRack(u.th, d.rack),
+			LayoutRack(d, u),
+		),
+		layout.Rigid(
+			LayoutFound(d, u),
 		),
 	)
 	return nil
