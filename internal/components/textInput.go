@@ -34,8 +34,14 @@ func LayoutTextInput(d *data, u *ui) func(C) D {
 				return border.Layout(gtx,
 					func(gtx C) D {
 						gtx.Constraints.Max.X = int(unit.Dp(400))
+						text := d.left()
+						if len(d.words)-len(d.found) == 1 {
+							text += " word remaining"
+						} else {
+							text += " words remaining"
+						}
 						return layout.UniformInset(unit.Dp(10)).Layout(gtx,
-							material.Editor(u.th, u.input, d.left()+" words remaining").Layout)
+							material.Editor(u.th, u.input, text).Layout)
 					},
 				)
 			},
