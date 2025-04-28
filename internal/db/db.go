@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"path"
 	"sort"
 	"strings"
@@ -50,7 +51,21 @@ func sortString(s string) string {
 	return strings.Join(sSlice, "")
 }
 
+func isAlpha(s string) bool {
+	for _, c := range s {
+		if c < 'a' || c > 'z' {
+			return false
+		}
+	}
+	return true
+}
+
 func AddWord(word string) error {
+	if !isAlpha(word) || len(word) < 2 || len(word) > 15 {
+		return errors.New("Invalid word, must only contain alphabetical characters " +
+			"and be between 2 and 15 characters in length.")
+	}
+	word = strings.TrimSpace(strings.ToLower(word))
 	alpha := sortString(word)
 	_, err := db.Exec("INSERT INTO words (alpha, word) VALUES (?, ?)", alpha, word)
 	if err != nil {
