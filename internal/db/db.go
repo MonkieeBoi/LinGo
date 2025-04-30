@@ -1,8 +1,10 @@
 package db
 
 import (
+	"bufio"
 	"database/sql"
 	"errors"
+	"io"
 	"path"
 	"sort"
 	"strings"
@@ -60,6 +62,15 @@ func isAlpha(s string) bool {
 	return true
 }
 
+func HasWords() (bool, error) {
+	var count int
+	err := db.QueryRow("SELECT COUNT(*) FROM words").Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
 func AddWord(word string) error {
 	if !isAlpha(word) || len(word) < 2 || len(word) > 15 {
 		return errors.New("Invalid word, must only contain alphabetical characters " +
@@ -69,6 +80,17 @@ func AddWord(word string) error {
 	alpha := sortString(word)
 	_, err := db.Exec("INSERT INTO words (alpha, word) VALUES (?, ?)", alpha, word)
 	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func AddWords(reader io.Reader) error {
+	scanner := bufio.NewScanner(reader)
+	for scanner.Scan() {
+		AddWord(scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
 		return err
 	}
 	return nil
