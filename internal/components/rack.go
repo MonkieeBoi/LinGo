@@ -40,10 +40,25 @@ func tile(th *material.Theme, s rune) layout.FlexChild {
 	)
 }
 
+func empty(th *material.Theme) layout.FlexChild {
+	h5 := material.H5(th,
+		"Failed to find words\n"+
+			"C-w to input words\n"+
+			"C-f to add words from a file (one word per line)\n"+
+			"C-p to switch back here")
+	h5.Alignment = text.Middle
+	return layout.Rigid(
+		h5.Layout,
+	)
+}
+
 func newRack(th *material.Theme, rack []rune) []layout.FlexChild {
 	t := make([]layout.FlexChild, 0)
 	for _, r := range rack {
 		t = append(t, tile(th, r))
+	}
+	if len(t) == 0 {
+		t = append(t, empty(th))
 	}
 	return t
 }
