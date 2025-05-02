@@ -105,6 +105,7 @@ func DelWord(word string) error {
 }
 
 func GetWords(alpha string) ([]string, error) {
+	alpha = strings.ToLower(sortString(alpha))
 	var words []string
 	rows, err := db.Query("SELECT word FROM words WHERE alpha = ?", alpha)
 	if err != nil {
