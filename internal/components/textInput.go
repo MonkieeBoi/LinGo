@@ -9,8 +9,8 @@ import (
 	"gioui.org/widget/material"
 )
 
-func NewTextInput() widget.Editor {
-	return widget.Editor{
+func NewTextInput() *widget.Editor {
+	return &widget.Editor{
 		Filter:     "abcdefghijklmnopqrstuvwxyz",
 		MaxLen:     15,
 		SingleLine: true,

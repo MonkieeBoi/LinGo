@@ -1,40 +1,48 @@
 package components
 
 import (
-	"github.com/MonkieeBoi/LinGo/internal/db"
-	"strings"
 	"strconv"
+	"strings"
+
+	"github.com/MonkieeBoi/LinGo/internal/db"
 )
 
 type data struct {
 	rack  []rune
 	words map[string]bool
 	found map[string]bool
+	end   bool
 }
 
-func newData() (*data, error) {
-	d := data{}
-	return &d, d.gen()
-}
-
-func (d *data) gen() error {
+func (d *data) gen() {
 	d.words = make(map[string]bool)
 	d.found = make(map[string]bool)
 	alpha, err := db.GenAlpha()
 	if err != nil {
-		return err
+		return
 	}
 
 	words, err := db.GetWords(alpha)
 	if err != nil {
-		return err
+		return
 	}
 
 	for _, word := range words {
 		d.words[word] = true
 	}
 	d.rack = []rune(strings.ToUpper(alpha))
-	return nil
+	d.end = false
+}
+
+func (d *data) refresh() {
+	words, err := db.GetWords(string(d.rack))
+	if err != nil {
+		return
+	}
+
+	for _, word := range words {
+		d.words[word] = true
+	}
 }
 
 func (d *data) left() string {

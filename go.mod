@@ -4,14 +4,17 @@ go 1.24.1
 
 require (
 	gioui.org v0.8.0
+	gioui.org/x v0.8.1
 	github.com/adrg/xdg v0.5.3
 	modernc.org/sqlite v1.37.0
 )
 
 require (
 	gioui.org/shader v1.0.8 // indirect
+	git.wow.st/gmp/jni v0.0.0-20210610011705-34026c7e22d0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/go-text/typesetting v0.2.1 // indirect
+	github.com/godbus/dbus/v5 v5.0.6 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
