@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/MonkieeBoi/LinGo/internal/db"
+	"github.com/MonkieeBoi/goana/internal/db"
 )
 
 type data struct {

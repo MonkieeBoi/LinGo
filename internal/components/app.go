@@ -11,7 +11,7 @@ import (
 	"gioui.org/unit"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
-	"github.com/MonkieeBoi/LinGo/internal/db"
+	"github.com/MonkieeBoi/goana/internal/db"
 )
 
 type (
@@ -25,7 +25,7 @@ func NewAppWindow(window *app.Window) error {
 	if has, _ := db.HasWords(); has {
 		d.gen()
 	}
-	window.Option(app.Title("LinGo"))
+	window.Option(app.Title("Goana"))
 	var ops op.Ops
 	for {
 		switch e := window.Event().(type) {

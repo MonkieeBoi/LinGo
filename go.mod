@@ -1,4 +1,4 @@
-module github.com/MonkieeBoi/LinGo
+module github.com/MonkieeBoi/goana
 
 go 1.24.1
 

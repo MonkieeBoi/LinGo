@@ -5,7 +5,7 @@ import (
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"gioui.org/x/explorer"
-	"github.com/MonkieeBoi/LinGo/internal/theme"
+	"github.com/MonkieeBoi/goana/internal/theme"
 )
 
 const (

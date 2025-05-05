@@ -17,7 +17,7 @@ var db *sql.DB
 
 func getDBPath() (string, error) {
 	dbFileName := "db.sqlite"
-	path, err := xdg.DataFile(path.Join("LinGo", dbFileName))
+	path, err := xdg.DataFile(path.Join("Goana", dbFileName))
 	if err != nil {
 		return "", err
 	}

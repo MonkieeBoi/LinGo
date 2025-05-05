@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/MonkieeBoi/LinGo/internal/components"
-	"github.com/MonkieeBoi/LinGo/internal/db"
+	"github.com/MonkieeBoi/goana/internal/components"
+	"github.com/MonkieeBoi/goana/internal/db"
 
 	"gioui.org/app"
 	"gioui.org/layout"

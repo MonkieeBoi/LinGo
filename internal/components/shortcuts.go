@@ -5,7 +5,7 @@ import (
 
 	"gioui.org/io/key"
 	"gioui.org/x/explorer"
-	"github.com/MonkieeBoi/LinGo/internal/db"
+	"github.com/MonkieeBoi/goana/internal/db"
 )
 
 func pressed(gtx C, filter key.Filter) bool {

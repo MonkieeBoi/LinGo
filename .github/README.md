@@ -1,4 +1,4 @@
-# LinGo
+# Goana
 
 Local desktop app for anagramming practise made with Gio UI.
 
