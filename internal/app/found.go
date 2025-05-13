@@ -1,4 +1,4 @@
-package components
+package app
 
 import (
 	"sort"
@@ -22,7 +22,7 @@ func layoutWords(th *material.Theme, found []string) []layout.FlexChild {
 	return words
 }
 
-func LayoutFound(d *data, u *ui) func(C) D {
+func layoutFound(d *data, u *ui) func(C) D {
 	words := []string{}
 	for word := range d.found {
 		words = append(words, word)

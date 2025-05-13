@@ -1,4 +1,4 @@
-package components
+package app
 
 import (
 	"image/color"
@@ -63,7 +63,7 @@ func newRack(th *material.Theme, rack []rune) []layout.FlexChild {
 	return t
 }
 
-func LayoutRack(d *data, u *ui) func(C) D {
+func layoutRack(d *data, u *ui) func(C) D {
 	return func(gtx C) D {
 		return layout.Flex{
 			Axis:    layout.Horizontal,

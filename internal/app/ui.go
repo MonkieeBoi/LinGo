@@ -1,4 +1,4 @@
-package components
+package app
 
 import (
 	"gioui.org/app"
@@ -26,8 +26,8 @@ func newUi(window *app.Window) *ui {
 	return &ui{
 		th:       theme.NewTheme(),
 		tab:      TabPlay,
-		input:    NewTextInput(),
-		editor:   NewEditor(),
+		input:    newTextInput(),
+		editor:   newEditor(),
 		button:   &widget.Clickable{},
 		explorer: explorer.NewExplorer(window),
 	}

@@ -1,4 +1,4 @@
-package components
+package app
 
 import (
 	"image/color"
@@ -67,7 +67,7 @@ func processButton(gtx C, u *ui) {
 }
 
 func processEvents(gtx C, d *data, u *ui) error {
-	ProcessShortcuts(gtx, d, u)
+	processShortcuts(gtx, d, u)
 	processButton(gtx, u)
 	if err := processSubmit(gtx, d, u); err != nil {
 		return err
@@ -85,13 +85,13 @@ func drawPlay(gtx C, d *data, u *ui) {
 		Alignment: layout.Middle,
 	}.Layout(gtx,
 		layout.Rigid(
-			LayoutTextInput(d, u),
+			layoutTextInput(d, u),
 		),
 		layout.Rigid(
-			LayoutRack(d, u),
+			layoutRack(d, u),
 		),
 		layout.Rigid(
-			LayoutFound(d, u),
+			layoutFound(d, u),
 		),
 	)
 }

@@ -1,4 +1,4 @@
-package components
+package app
 
 import (
 	"errors"
@@ -17,7 +17,7 @@ func pressed(gtx C, filter key.Filter) bool {
 	return false
 }
 
-func ProcessShortcuts(gtx C, d *data, u *ui) {
+func processShortcuts(gtx C, d *data, u *ui) {
 	if pressed(gtx, key.Filter{Name: "F", Required: key.ModShortcut}) {
 		go func() {
 			io, err := u.explorer.ChooseFile()

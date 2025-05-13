@@ -4,15 +4,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/MonkieeBoi/goana/internal/components"
+	"github.com/MonkieeBoi/goana/internal/app"
 	"github.com/MonkieeBoi/goana/internal/db"
 
-	"gioui.org/app"
-	"gioui.org/layout"
+	gapp "gioui.org/app"
 )
-
-type C = layout.Context
-type D = layout.Dimensions
 
 func main() {
 	err := db.InitDB()
@@ -20,11 +16,11 @@ func main() {
 		log.Fatal("Failed to initalise database.")
 	}
 	go func() {
-		window := new(app.Window)
-		if err := components.NewAppWindow(window); err != nil {
+		window := new(gapp.Window)
+		if err := app.NewAppWindow(window); err != nil {
 			log.Fatal(err)
 		}
 		os.Exit(0)
 	}()
-	app.Main()
+	gapp.Main()
 }

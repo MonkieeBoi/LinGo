@@ -1,4 +1,4 @@
-package components
+package app
 
 import (
 	"image/color"
@@ -9,7 +9,7 @@ import (
 	"gioui.org/widget/material"
 )
 
-func NewTextInput() *widget.Editor {
+func newTextInput() *widget.Editor {
 	return &widget.Editor{
 		Filter:     "abcdefghijklmnopqrstuvwxyz",
 		MaxLen:     15,
@@ -18,7 +18,7 @@ func NewTextInput() *widget.Editor {
 	}
 }
 
-func LayoutTextInput(d *data, u *ui) func(C) D {
+func layoutTextInput(d *data, u *ui) func(C) D {
 	return func(gtx C) D {
 		margins := layout.Inset{
 			Top:    unit.Dp(25),
